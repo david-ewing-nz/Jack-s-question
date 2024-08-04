@@ -1,5 +1,4 @@
-r
-Copy code
+
 # Load necessary libraries
 library(tidyverse)
 
@@ -8,36 +7,22 @@ ssa_table <- read.csv("ssa_table.csv", stringsAsFactors = FALSE)
 
 # View the structure of the original table
 str(ssa_table)
+
 head(ssa_table)
 
 # Extract relevant columns for males and add a new 'Sex' column
 male_data <- ssa_table %>%
   select(1, contains("Male")) %>%
   mutate(Sex = "Male")
+str(male_data)
+head(male_data)
+write.csv(male_data, file = "male_data.csv", row.names = FALSE)
 
 # Extract relevant columns for females and add a new 'Sex' column
 female_data <- ssa_table %>%
   select(1, contains("Female")) %>%
   mutate(Sex = "Female")
+str(female_data)
+head(female_data)
+write.csv(female_data, file = "female_data.csv", row.names = FALSE)
 
-# Rename columns by removing the prefix "Male" or "Female" from column names
-# Also, ensure the column names are unique and not empty
-male_data <- male_data %>%
-  rename_with(~ gsub("Male", "", .), starts_with("Male")) %>%
-  rename_with(~ gsub("^\\s+|\\s+$", "", .)) %>% # Trim any leading/trailing spaces
-  rename_with(~ gsub("\\.+", ".", .)) # Replace multiple dots with a single dot
-
-female_data <- female_data %>%
-  rename_with(~ gsub("Female", "", .), starts_with("Female")) %>%
-  rename_with(~ gsub("^\\s+|\\s+$", "", .)) %>% # Trim any leading/trailing spaces
-  rename_with(~ gsub("\\.+", ".", .)) # Replace multiple dots with a single dot
-
-# Combine both data frames
-combined_data <- bind_rows(male_data, female_data)
-
-# Display the structure and first few rows of the combined table
-str(combined_data)
-head(combined_data)
-
-# Save the combined data to a new CSV file
-write.csv(combined_data, "combined_ssa_table.csv", row.names = FALSE)
