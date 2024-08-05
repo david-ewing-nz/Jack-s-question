@@ -12,17 +12,18 @@ head(ssa_table)
 
 # Extract relevant columns for males and add a new 'Sex' column
 male_data <- ssa_table %>%
-  select(1, contains("Male")) %>%
+  select(Exact.age, Male, Male.1, Male.2) %>% # Select only male-related columns
   mutate(Sex = "Male")
 str(male_data)
 head(male_data)
+
+# Write male_data to CSV
 write.csv(male_data, file = "male_data.csv", row.names = FALSE)
 
 # Extract relevant columns for females and add a new 'Sex' column
 female_data <- ssa_table %>%
-  select(1, contains("Female")) %>%
+  select(Exact.age, Female, Female.1, Female.2) %>% # Select only female-related columns
   mutate(Sex = "Female")
 str(female_data)
 head(female_data)
-write.csv(female_data, file = "female_data.csv", row.names = FALSE)
 
